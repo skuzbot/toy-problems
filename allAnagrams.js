@@ -1,11 +1,15 @@
 /*
 Output:
-array of all anagrams
+  array of all anagrams
+
 Input:
-string
+  string
+
 Constrains/Conditions:
+  none
 
 Examples/Edge Cases:
+  'abc' -> ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
 
 */
 // -Start of Code-                                                 ===
@@ -36,70 +40,7 @@ allAnagrams = (str, out = [], arr = str.split``) => {
 
 // given tests:
 
-const input = 'ABBEEE'; //[ "abc", "acb", "bac", "bca", "cab", "cba" ]
-
-const perms = ['ABBEEE',
-  'ABEBEE',
-  'ABEEBE',
-  'ABEEEB',
-  'AEBBEE',
-  'AEBEBE',
-  'AEBEEB',
-  'AEEBBE',
-  'AEEBEB',
-  'AEEEBB',
-  'BABEEE',
-  'BAEBEE',
-  'BAEEBE',
-  'BAEEEB',
-  'BBAEEE',
-  'BBEAEE',
-  'BBEEAE',
-  'BBEEEA',
-  'BEABEE',
-  'BEAEBE',
-  'BEAEEB',
-  'BEBAEE',
-  'BEBEAE',
-  'BEBEEA',
-  'BEEABE',
-  'BEEAEB',
-  'BEEBAE',
-  'BEEBEA',
-  'BEEEAB',
-  'BEEEBA',
-  'EABBEE',
-  'EABEBE',
-  'EABEEB',
-  'EAEBBE',
-  'EAEBEB',
-  'EAEEBB',
-  'EBABEE',
-  'EBAEBE',
-  'EBAEEB',
-  'EBBAEE',
-  'EBBEAE',
-  'EBBEEA',
-  'EBEABE',
-  'EBEAEB',
-  'EBEBAE',
-  'EBEBEA',
-  'EBEEAB',
-  'EBEEBA',
-  'EEABBE',
-  'EEABEB',
-  'EEAEBB',
-  'EEBABE',
-  'EEBAEB',
-  'EEBBAE',
-  'EEBBEA',
-  'EEBEAB',
-  'EEBEBA',
-  'EEEABB',
-  'EEEBAB',
-  'EEEBBA'
-]
-60
+const input = 'abc'; //[ "abc", "acb", "bac", "bca", "cab", "cba" ]
 
 console.log(allAnagrams(input));
 console.log(allAnagrams(input).length);
