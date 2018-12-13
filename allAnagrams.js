@@ -12,7 +12,7 @@ Examples/Edge Cases:
   'abc' -> ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
 
 */
-// -Start of Code-                                                 ===
+// -Start of Code-
 allAnagrams = (str, out = [], arr = str.split``) => {
 
   //inner recursive permutatin function
@@ -35,10 +35,9 @@ allAnagrams = (str, out = [], arr = str.split``) => {
   //filters dups
   return out.filter((v, i, a) => a.indexOf(v) === i);
 };
+// -End of Code-
 
-// -End of Code-                                                   ===
-
-// given tests:
+// tests:
 
 const input = 'abc'; //[ "abc", "acb", "bac", "bca", "cab", "cba" ]
 
