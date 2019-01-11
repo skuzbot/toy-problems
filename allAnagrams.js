@@ -39,7 +39,7 @@ allAnagrams = (str, out = [], arr = str.split``) => {
 
 // tests:
 
-const input = 'abc'; //[ "abc", "acb", "bac", "bca", "cab", "cba" ]
+const input = 'abklsc'; //[ "abc", "acb", "bac", "bca", "cab", "cba" ]
 
 console.log(allAnagrams(input));
 console.log(allAnagrams(input).length);
