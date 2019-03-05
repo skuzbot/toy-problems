@@ -32,5 +32,4 @@ numJewelsInStones = (j, s) => {
 const input1 = 'aA';
 const input2 = 'aAAbbbb';
 
-
 console.log(numJewelsInStones(input1, input2));
