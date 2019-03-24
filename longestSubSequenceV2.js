@@ -34,7 +34,6 @@ const longestSequence = (grid) => {
   //clones grid to perserve grid in memeory
   const cloneGrid = g => g.map(a => a.slice());
   let gridClone = cloneGrid(grid);
-  // console.log('gridClone :', gridClone);
   
   //checks if next index is in grid bounds
   const isOnGrid = (r, c, w, h) => ((r >= 0 && r < w) && (c >= 0 && c < h));
@@ -94,9 +93,6 @@ const longestSequence = (grid) => {
   const markCellSeen = (r, c, g) => g[r][c] = 'NaN';
 
   const gridRecurse = (cords, depth, curGrid) => {
-    // // ? is this check needed?
-    // curGrid = curGrid || gridClone;
-    // console.log('curGrid :', curGrid);
     let r = cords[0];
     let c = cords[1];
     let curCell = curGrid[r][c];
@@ -107,18 +103,13 @@ const longestSequence = (grid) => {
     let deepestMoves = [];
     let deepestMove = 0;
     let nextMoves = [];
-    // console.log('curDepth :', curDepth);
-    // console.log('curGrid :', curGrid);
     
     markCellSeen(r, c, curGrid);
 
-    // ? seen cells are sneaking in
     if (curCell === 'NaN') {
       return 0;
     }
 
-    //check for single row edge-case
-    // if (gHeight > 1) {
     //northwest
     if (validMoves[`${r}${c}`].moves[0][0] && curGrid[r - 1][c - 1] !== 'NaN') {
       nextMoves.push([r - 1, c - 1]);
@@ -143,10 +134,6 @@ const longestSequence = (grid) => {
     if (validMoves[`${r}${c}`].moves[2][2] && curGrid[r + 1][c + 1] !== 'NaN') {
       nextMoves.push([r + 1, c + 1]);
     }
-    // }
-    
-    //check for single column edge-case
-    // if (gWidth > 1) {
     //east
     if (validMoves[`${r}${c}`].moves[1][2] && curGrid[r][c + 1] !== 'NaN') {
       nextMoves.push([r, c + 1]);
@@ -155,13 +142,9 @@ const longestSequence = (grid) => {
     if (validMoves[`${r}${c}`].moves[1][0] && curGrid[r][c - 1] !== 'NaN') {
       nextMoves.push([r, c - 1]);
     }
-    // }
-    
-    // console.log('nextMoves for curCell :', curCell, nextMoves);
 
     // basecase
     if (nextMoves.length === 0) {
-      // console.log('basecase found');
       return curDepth;
     }
 
@@ -171,17 +154,13 @@ const longestSequence = (grid) => {
       deepestMoves = nextMoves.map((cord) => {
         //create temp grid to reset seen cells in recursion branches
         let tempGrid = cloneGrid(curGrid);
-        // console.log('tempGrid *****+*=*=*=* :', tempGrid);
         return gridRecurse(cord, curDepth, tempGrid);
       }).sort((a, b) => b - a);
       deepestMove = deepestMoves[0];
-      // console.log('deepestMoves for curCell :', curCell, deepestMoves);
     } else {
       deepestMove = gridRecurse(nextMoves[0], curDepth, curGrid);
     }
     curDepth = Math.max(deepestMove, curDepth);
-    // console.log('deepestMove for curCell :', curCell, deepestMove);
-    // console.log('curLongest for curCell :', curCell, curLongest);
     return curDepth;
   };
   
@@ -280,19 +259,19 @@ const longestSequence = (grid) => {
 // const test8Expected = 0;
 
 
-const test9 = [ 
-  [ 0, 8, 0, 8, 7, 5, 3, 8, 1, 4 ],
-  [ 3, 3, 3, 4, 8, 2, 4, 0, 1, 6 ],
-  [ 2, 5, 6, 4, 7, 7, 3, 1, 5, 3 ],
-  [ 2, 6, 2, 5, 3, 5, 7, 3, 2, 0 ],
-  [ 4, 7, 8, 1, 5, 1, 1, 5, 2, 0 ],
-  [ 5, 8, 1, 0, 0, 4, 3, 0, 8, 3 ],
-  [ 1, 8, 4, 3, 0, 0, 8, 2, 6, 6 ],
-  [ 7, 3, 8, 6, 3, 8, 4, 5, 7, 6 ],
-  [ 1, 7, 4, 2, 8, 1, 2, 4, 4, 8 ],
-  [ 2, 2, 8, 8, 2, 5, 8, 1, 8, 4 ] 
-];
-const test9Result = longestSequence(test9);
+// const test9 = [ 
+//   [ 0, 8, 0, 8, 7, 5, 3, 8, 1, 4 ],
+//   [ 3, 3, 3, 4, 8, 2, 4, 0, 1, 6 ],
+//   [ 2, 5, 6, 4, 7, 7, 3, 1, 5, 3 ],
+//   [ 2, 6, 2, 5, 3, 5, 7, 3, 2, 0 ],
+//   [ 4, 7, 8, 1, 5, 1, 1, 5, 2, 0 ],
+//   [ 5, 8, 1, 0, 0, 4, 3, 0, 8, 3 ],
+//   [ 1, 8, 4, 3, 0, 0, 8, 2, 6, 6 ],
+//   [ 7, 3, 8, 6, 3, 8, 4, 5, 7, 6 ],
+//   [ 1, 7, 4, 2, 8, 1, 2, 4, 4, 8 ],
+//   [ 2, 2, 8, 8, 2, 5, 8, 1, 8, 4 ] 
+// ];
+// const test9Result = longestSequence(test9);
 
 
 const test10 = [ 
@@ -310,8 +289,8 @@ const test10Expected = 0;
 /*
 ! edge cases to check:
 // ! no numbers in matrix
-! empty cells in matrix (one or all)
-! only checking r < 4 and c < 4 so far
+// ! empty cells in matrix (one or all)
+// ! only checking r < 4 and c < 4 so far
 ! cell numbers < 0 and > 9
 ! error in hasValidDiff
 ! we're not catching a row or column somehow.. not sure about that
