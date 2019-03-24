@@ -125,7 +125,7 @@ const longestSequence = (grid) => {
     }
 
     //takes all valid cords and maps the value of the deepest sequence found then sorts for easy access to deepest depth
-    //this is to check for forks in the road where I need to return
+    //this is to check for forks in the road that I need to backtrack to
     if (nextMoves.length > 1) {
       deepestMoves = nextMoves.map((cord, i) => {
         //create temp grid to reset seen cells in recursion branches
