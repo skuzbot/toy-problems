@@ -31,8 +31,23 @@ const longestSequence = (grid) => {
   let longest = 0;
   let tempLongest = 0;
 
-  let foundMoves = {};
+  // builds an array that will be updated when a cell is visited
+  const buildSeenCells = () => {
+    let g = [];
+    for (let i = 0; i < gHeight; i++) {
+      g.push([]);
+    }
 
+    g.forEach(row => {
+      for (let j = 0; j < gWidth; j++) {
+        row.push(false);
+      }
+    });
+  };
+  
+  let seenCells = buildSeenCells();
+
+  console.log('seenCells :', seenCells);
   
   //clones grid to perserve grid in memeory
   const cloneGrid = g => g.map(a => a.slice());
@@ -160,15 +175,15 @@ const longestSequence = (grid) => {
 
 // given tests:
 
-// const test0 = [
-//   [8, 2, 4],
-//   [0, 6, 1],
-//   [3, 7, 9]
-// ];
+const test0 = [
+  [8, 2, 4],
+  [0, 6, 1],
+  [3, 7, 9]
+];
 
-// const test0Result = longestSequence(test0);
+const test0Result = longestSequence(test0);
 
-// const test0Output = 8;
+const test0Expected = 8;
 
 // const test1 = [
 //   [1, 6, 2],
@@ -178,7 +193,7 @@ const longestSequence = (grid) => {
 
 // const test1Result = longestSequence(test1);
 
-// const test1Output = 9;
+// const test0Expected = 9;
 
 // const test2 = [
 //   [4, 2, 4],
@@ -188,7 +203,7 @@ const longestSequence = (grid) => {
 
 // const test2Result = longestSequence(test2);
 
-// const test2Output = 6;
+// const test2Expected = 6;
 
 // const test3 = [
 //   [4],
@@ -198,7 +213,7 @@ const longestSequence = (grid) => {
 
 // const test3Result = longestSequence(test3);
 
-// const test3Output = 2;
+// const test3Expected = 2;
 
 // const test4 = [
 //   [4]
@@ -206,7 +221,7 @@ const longestSequence = (grid) => {
 
 // const test4Result = longestSequence(test4);
 
-// const test4Output = 1;
+// const test4Expected = 1;
 
 // const test5 = [
 //   [4, 0, 3]
@@ -214,8 +229,7 @@ const longestSequence = (grid) => {
 
 // const test5Result = longestSequence(test5);
 
-// const test5Output = 2;
-
+// const test5Expected = 2;
 
 // const test6 = [
 //   []
@@ -223,7 +237,7 @@ const longestSequence = (grid) => {
 
 // const test6Result = longestSequence(test6);
 
-// const test6Output = 0;
+// const test6Expected = 0;
 
 // const test7 = [
 //   ['a', 'b', 'c'],
@@ -233,7 +247,7 @@ const longestSequence = (grid) => {
 
 // const test7Result = longestSequence(test7);
 
-// const test7Output = 0;
+// const test7Expected = 0;
 
 // const test8 = [
 //   ['', , ''],
@@ -243,24 +257,24 @@ const longestSequence = (grid) => {
 
 // const test8Result = longestSequence(test8);
 
-// const test8Output = 0;
+// const test8Expected = 0;
 
-const test9 = [ 
-  [ 0, 8, 0, 8, 7, 5, 3, 8, 1, 4 ],
-  [ 3, 3, 3, 4, 8, 2, 4, 0, 1, 6 ],
-  [ 2, 5, 6, 4, 7, 7, 3, 1, 5, 3 ],
-  [ 2, 6, 2, 5, 3, 5, 7, 3, 2, 0 ],
-  [ 4, 7, 8, 1, 5, 1, 1, 5, 2, 0 ],
-  [ 5, 8, 1, 0, 0, 4, 3, 0, 8, 3 ],
-  [ 1, 8, 4, 3, 0, 0, 8, 2, 6, 6 ],
-  [ 7, 3, 8, 6, 3, 8, 4, 5, 7, 6 ],
-  [ 1, 7, 4, 2, 8, 1, 2, 4, 4, 8 ],
-  [ 2, 2, 8, 8, 2, 5, 8, 1, 8, 4 ] 
-];
+// const test9 = [ 
+//   [ 0, 8, 0, 8, 7, 5, 3, 8, 1, 4 ],
+//   [ 3, 3, 3, 4, 8, 2, 4, 0, 1, 6 ],
+//   [ 2, 5, 6, 4, 7, 7, 3, 1, 5, 3 ],
+//   [ 2, 6, 2, 5, 3, 5, 7, 3, 2, 0 ],
+//   [ 4, 7, 8, 1, 5, 1, 1, 5, 2, 0 ],
+//   [ 5, 8, 1, 0, 0, 4, 3, 0, 8, 3 ],
+//   [ 1, 8, 4, 3, 0, 0, 8, 2, 6, 6 ],
+//   [ 7, 3, 8, 6, 3, 8, 4, 5, 7, 6 ],
+//   [ 1, 7, 4, 2, 8, 1, 2, 4, 4, 8 ],
+//   [ 2, 2, 8, 8, 2, 5, 8, 1, 8, 4 ] 
+// ];
 
-const test9Result = longestSequence(test9);
+// const test9Result = longestSequence(test9);
 
-const test9Output = 0;
+// const test9Expected = 0;
 
 /*
 ! edge cases to check:
@@ -273,34 +287,34 @@ const test9Output = 0;
 */
 
 
-// console.log('******* Test Longest Sequence is: ', test0Result);
-// console.log('******* Test is equal *+*+*+*', test0Result === test0Output);
-// console.log('\n');
+console.log('******* Test Longest Sequence is: ', test0Result);
+console.log('******* Test is equal *+*+*+*', test0Result === test0Expected);
+console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test1Result);
-// console.log('******* Test is equal *+*+*+*', test1Result === test1Output);
+// console.log('******* Test is equal *+*+*+*', test1Result === test0Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test2Result);
-// console.log('******* Test is equal *+*+*+*', test2Result === test2Output);
+// console.log('******* Test is equal *+*+*+*', test2Result === test2Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test3Result);
-// console.log('******* Test is equal *+*+*+*', test3Result === test3Output);
+// console.log('******* Test is equal *+*+*+*', test3Result === test3Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test4Result);
-// console.log('******* Test is equal *+*+*+*', test4Result === test4Output);
+// console.log('******* Test is equal *+*+*+*', test4Result === test4Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test5Result);
-// console.log('******* Test is equal *+*+*+*', test5Result === test5Output);
+// console.log('******* Test is equal *+*+*+*', test5Result === test5Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test6Result);
-// console.log('******* Test is equal *+*+*+*', test6Result === test6Output);
+// console.log('******* Test is equal *+*+*+*', test6Result === test6Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test7Result);
-// console.log('******* Test is equal *+*+*+*', test7Result === test7Output);
+// console.log('******* Test is equal *+*+*+*', test7Result === test7Expected);
 // console.log('\n');
 // console.log('******* Test Longest Sequence is: ', test8Result);
-// console.log('******* Test is equal *+*+*+*', test8Result === test8Output);
+// console.log('******* Test is equal *+*+*+*', test8Result === test8Expected);
 // console.log('\n');
-console.log('******* Test Longest Sequence is: ', test9Result);
-console.log('******* Test is equal *+*+*+*', test9Result === test9Output);
-console.log('\n');
+// console.log('******* Test Longest Sequence is: ', test9Result);
+// console.log('******* Test is equal *+*+*+*', test9Result === test9Expected);
+// console.log('\n');
 
