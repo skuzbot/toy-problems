@@ -32,7 +32,7 @@ const longestSequence = (grid) => {
   let tempLongest = 0;
 
   //clones grid to perserve grid in memeory
-  const cloneGrid = g => g.map(a => a.slice());
+  const cloneGrid = g => g.map(a => [...a]);
   let gridClone = cloneGrid(grid);
   
   //checks if next index is in grid bounds
@@ -71,7 +71,7 @@ const longestSequence = (grid) => {
           [
             //west
             gWidth > 1 ? hasValidDiff(curValue, i, j - 1, gridClone) : false,
-            //owncell
+            //own cell
             null,
             //east
             gWidth > 1 ? hasValidDiff(curValue, i, j + 1, gridClone) : false
@@ -92,14 +92,15 @@ const longestSequence = (grid) => {
   //marks current cell as seen
   const markCellSeen = (r, c, g) => g[r][c] = 'NaN';
 
+  let recurseCount = 0;
   const gridRecurse = (cords, depth, curGrid) => {
+    recurseCount++;
     let r = cords[0];
     let c = cords[1];
     let curCell = curGrid[r][c];
 
     //checking to make sure current cell is an int
     let curDepth = (!isNaN(curCell) && curCell !== null && curCell !== '') ? depth + 1 : depth;
-    let curLongest = 0;
     let deepestMoves = [];
     let deepestMove = 0;
     let nextMoves = [];
@@ -109,6 +110,7 @@ const longestSequence = (grid) => {
     if (curCell === 'NaN') {
       return 0;
     }
+
 
     //northwest
     if (validMoves[`${r}${c}`].moves[0][0] && curGrid[r - 1][c - 1] !== 'NaN') {
@@ -142,7 +144,7 @@ const longestSequence = (grid) => {
     if (validMoves[`${r}${c}`].moves[1][0] && curGrid[r][c - 1] !== 'NaN') {
       nextMoves.push([r, c - 1]);
     }
-
+    // console.log('nextMoves with curCell :', curCell, nextMoves);
     // basecase
     if (nextMoves.length === 0) {
       return curDepth;
@@ -151,16 +153,16 @@ const longestSequence = (grid) => {
     //takes all valid cords and maps the value of the deepest sequence found then sorts for easy access to deepest depth
     //this is to check for forks in the road that I need to backtrack to
     if (nextMoves.length > 1) {
-      deepestMoves = nextMoves.map((cord) => {
+      deepestMove = nextMoves.reduce((prev, cord) => {
         //create temp grid to reset seen cells in recursion branches
         let tempGrid = cloneGrid(curGrid);
-        return gridRecurse(cord, curDepth, tempGrid);
-      }).sort((a, b) => b - a);
-      deepestMove = deepestMoves[0];
+        curDeepest = gridRecurse(cord, curDepth, tempGrid);
+        return prev > curDeepest ? prev : curDeepest;
+      }, 0);
     } else {
       deepestMove = gridRecurse(nextMoves[0], curDepth, curGrid);
     }
-    curDepth = Math.max(deepestMove, curDepth);
+    curDepth = deepestMove > curDepth ? deepestMove : curDepth;
     return curDepth;
   };
   
@@ -174,10 +176,10 @@ const longestSequence = (grid) => {
       tempLongest = gridRecurse([i, j], 0, gridClone);
 
       //check temp longest against longest
-      longest = Math.max(tempLongest, longest);
+      longest = tempLongest > longest ? tempLongest : longest;
     }
   }
-
+  console.log(recurseCount);
   return longest;
 };
 // -End of Code-                                                   ===
@@ -275,14 +277,18 @@ const longestSequence = (grid) => {
 
 
 const test10 = [ 
-  [ 5, 0, 0, 5, 0, 7 ],
-  [ 8, 1, 8, 5, 3, 7 ],
-  [ 8, 8, 3, 0, 8, 4 ],
-  [ 8, 7, 4, 8, 4, 8 ],
-  [ 5, 5, 2, 7, 3, 0 ],
-  [ 0, 7, 0, 5, 2, 4 ] 
+  [ 1, 1, 8, 0, 3, 0 ],
+  [ 7, 4, 3, 4, 4, 1 ],
+  [ 5, 7, 4, 6, 8, 0 ],
+  [ 1, 3, 3, 7, 1, 7 ],
+  [ 3, 8, 3, 0, 7, 7 ],
+  [ 0, 6, 1, 1, 7, 6 ] 
 ];
+
+const t1 = Date.now();
 const test10Result = longestSequence(test10);
+const t2 = Date.now();
+console.log(t2 - t1, 'ms');
 const test10Expected = 0;
 
 
