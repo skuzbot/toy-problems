@@ -23,12 +23,10 @@ Examples/Edge Cases:
 //helper functions
 
 
-
 // -Start of Code-                                                 ===
+
 const longestSequence = (grid) => {
-  if (grid === [] || !grid) {
-    return 0;
-  }
+
   const gHeight = grid.length;
   const gWidth = grid[0].length;
   let longest = 0;
@@ -62,6 +60,7 @@ const longestSequence = (grid) => {
         row: i,
         col: j,
         val: gridClone[i][j],
+        
         moves: [
           [
             //northwest
@@ -95,16 +94,13 @@ const longestSequence = (grid) => {
   //marks current cell as seen
   const markCellSeen = (r, c, g) => g[r][c] = 'NaN';
 
-  let recurseCount = 0;
   const gridRecurse = (cords, depth, curGrid) => {
-    recurseCount++;
     let r = cords[0];
     let c = cords[1];
     let curCell = curGrid[r][c];
 
     //checking to make sure current cell is an int
     let curDepth = (!isNaN(curCell) && curCell !== null && curCell !== '') ? depth + 1 : depth;
-    let deepestMoves = [];
     let deepestMove = 0;
     let nextMoves = [];
     
@@ -115,6 +111,8 @@ const longestSequence = (grid) => {
     }
 
 
+    // these if checks iterate over the possible 8 directions of the next possible move
+    // and determines if the move is valid and if the cell has not already been seen
     //northwest
     if (validMoves[`${r}${c}`].moves[0][0] && curGrid[r - 1][c - 1] !== 'NaN') {
       nextMoves.push([r - 1, c - 1]);
@@ -147,14 +145,13 @@ const longestSequence = (grid) => {
     if (validMoves[`${r}${c}`].moves[1][0] && curGrid[r][c - 1] !== 'NaN') {
       nextMoves.push([r, c - 1]);
     }
-    // console.log('nextMoves with curCell :', curCell, nextMoves);
     // basecase
     if (nextMoves.length === 0) {
       return curDepth;
     }
 
-    //takes all valid cords and maps the value of the deepest sequence found then sorts for easy access to deepest depth
-    //this is to check for forks in the road that I need to backtrack to
+    //takes all valid cords and reduces them to the single deepest depth of all possible moves
+    //this is to check for forks in the sequence that I need to backtrack to
     if (nextMoves.length > 1) {
       deepestMove = nextMoves.reduce((prev, cord) => {
         //create temp grid to reset seen cells in recursion branches
@@ -182,7 +179,6 @@ const longestSequence = (grid) => {
       longest = tempLongest > longest ? tempLongest : longest;
     }
   }
-  // console.log(recurseCount);
   return longest;
 };
 // -End of Code-                                                   ===
@@ -239,11 +235,11 @@ const longestSequence = (grid) => {
 // const test5Expected = 2;
 
 
-// const test6 = [
-//   []
-// ];
-// const test6Result = longestSequence(test6);
-// const test6Expected = 0;
+const test6 = [
+  [],
+];
+const test6Result = longestSequence(test6);
+const test6Expected = 0;
 
 
 // const test7 = [
@@ -279,22 +275,30 @@ const longestSequence = (grid) => {
 // const test9Result = longestSequence(test9);
 
 
-const test10 = [ 
-  [ 6, 2, 4, 1, 2, 5, 4, 4 ],
-  [ 7, 6, 4, 5, 1, 5, 2, 5 ],
-  [ 7, 2, 2, 1, 2, 4, 6, 3 ],
-  [ 0, 0, 8, 8, 4, 0, 1, 8 ],
-  [ 1, 7, 0, 2, 6, 3, 7, 6 ],
-  [ 7, 8, 5, 4, 7, 5, 4, 0 ],
-  [ 4, 6, 0, 6, 2, 0, 1, 2 ],
-  [ 5, 7, 0, 3, 3, 6, 0, 5 ] 
-];
+// const test10 = [ 
+//   [ 6, 2, 4, 1, 2, 5, 4, 4 ],
+//   [ 7, 6, 4, 5, 1, 5, 2, 5 ],
+//   [ 7, 2, 2, 1, 2, 4, 6, 3 ],
+//   [ 0, 0, 8, 8, 4, 0, 1, 8 ],
+//   [ 1, 7, 0, 2, 6, 3, 7, 6 ],
+//   [ 7, 8, 5, 4, 7, 5, 4, 0 ],
+//   [ 4, 6, 0, 6, 2, 0, 1, 2 ],
+//   [ 5, 7, 0, 3, 3, 6, 0, 5 ] 
+// ];
 
-const t1 = Date.now();
-const test10Result = longestSequence(test10);
-const t2 = Date.now();
-console.log(t2 - t1, 'ms');
-const test10Expected = 0;
+// const t1 = Date.now();
+// const test10Result = longestSequence(test10);
+// const t2 = Date.now();
+// console.log(t2 - t1, 'ms');
+// const test10Expected = 0;
+
+const test11 = [
+  [-8, 2, 4],
+  [0, 6, 1],
+  [3, 7, -12]
+];
+const test11Result = longestSequence(test11);
+const test11Expected = 8;
 
 
 /*
@@ -302,7 +306,7 @@ const test10Expected = 0;
 // ! no numbers in matrix
 // ! empty cells in matrix (one or all)
 // ! only checking r < 4 and c < 4 so far
-! cell numbers < 0 and > 9
+// ! cell numbers < 0 and > 9
 ! error in hasValidDiff
 ! we're not catching a row or column somehow.. not sure about that
 */
@@ -326,9 +330,9 @@ const test10Expected = 0;
 // console.log('******* Test 5 Longest Sequence is: ', test5Result);
 // console.log('******* Test is equal *+*+*+*', test5Result === test5Expected);
 // console.log('\n');
-// console.log('******* Test 6 Longest Sequence is: ', test6Result);
-// console.log('******* Test is equal *+*+*+*', test6Result === test6Expected);
-// console.log('\n');
+console.log('******* Test 6 Longest Sequence is: ', test6Result);
+console.log('******* Test is equal *+*+*+*', test6Result === test6Expected);
+console.log('\n');
 // console.log('******* Test 7 Longest Sequence is: ', test7Result);
 // console.log('******* Test is equal *+*+*+*', test7Result === test7Expected);
 // console.log('\n');
@@ -338,7 +342,10 @@ const test10Expected = 0;
 // console.log('******* Test 9 Longest Sequence is: ', test9Result);
 // console.log('******* Test is equal *+*+*+*', test9Result === test9Expected);
 // console.log('\n');
-console.log('******* Test 10 Longest Sequence is: ', test10Result);
-console.log('******* Test is equal *+*+*+*', test10Result === test10Expected);
+// console.log('******* Test 10 Longest Sequence is: ', test10Result);
+// console.log('******* Test is equal *+*+*+*', test10Result === test10Expected);
+// console.log('\n');
+console.log('******* Test 11 Longest Sequence is: ', test11Result);
+console.log('******* Test is equal *+*+*+*', test11Result === test11Expected);
 console.log('\n');
 

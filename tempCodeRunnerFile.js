@@ -1,2 +1,3 @@
-Move for curCell :', curCell, deepestMove);
-    // console.log('curLongest fo
+  // if (grid === [[]] || !grid) {
+  //   return 0;
+  // }
